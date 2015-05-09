@@ -2,7 +2,7 @@
   "name": "api",
   "version": "0.0.0",
   "description": "",
-  "main": "api.js",
+  "main": "src/api.js",
   "scripts": {
     "test": "karma start karma.conf.js"
   },

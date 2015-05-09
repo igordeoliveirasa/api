@@ -15,7 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '*.js',
+      'src/*.js',
       'specs/**/*spec.js'
     ],
 
@@ -37,7 +37,7 @@ module.exports = function(config) {
     reporters: ['progress', 'coverage'],
 
     preprocessors: {
-      '*.js': ['coverage']
+      'src/*.js': ['coverage']
     },
 
     // web server port
