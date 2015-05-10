@@ -11,3 +11,9 @@ Auth = function() {
         return this.user.signUp();
     }
 };
+
+Application = function() {
+    this.save = function(token, name) {
+
+    }
+};
