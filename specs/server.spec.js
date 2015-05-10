@@ -2,15 +2,15 @@
  * Created by igor on 09/05/15.
  */
 
+// Mocking Parse
+var Parse = {initialize:function(applicationId, key){}};
 
 
 describe("Server Api's tests", function() {
-
-
     var api;
 
     beforeEach(function(){
-        api = new Server();
+        api = new Server(new Auth());
     });
 
     it("should not pass because e-mail is empty", function(){
@@ -60,11 +60,11 @@ describe("Server Api's tests", function() {
         expect(ret.message).toBe("Invalid password...");
     });
 
-    it("contains spec with an expectation", function() {
+    it("should really signUp since everything is right", function() {
         var email = "igordeoliveirasa@gmail.com";
         var password =  "123mudar!";
-        spyOn(api.service, "signUp");
+        spyOn(api.auth, "signUp");
         api.signUp(email, password);
-        expect(api.service.signUp).toHaveBeenCalledWith(email, password);
+        expect(api.auth.signUp).toHaveBeenCalledWith(email, password);
     });
 });

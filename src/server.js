@@ -3,13 +3,10 @@
  */
 
 
-var Server = function() {
+var Server = function(Auth) {
+    Parse.initialize("WE1ExJbmUS4zRcKOYopvSyECi9gFJ1C1N5GFTD7l", "vprhe4lWqNvfkgurX8J6zV6sijyfo2c2jRfwv0t4");
 
-    this.service = {
-        signUp:function(email, password) {
-
-        }
-    };
+    this.auth = Auth;
 
     this.validateEmailSyntax = function(email) {
         var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
@@ -33,7 +30,7 @@ var Server = function() {
 
     this.signUp = function(email, password) {
         if (this.validateCredentials(email, password)) {
-            return this.service.signUp(email, password);
+            return this.auth.signUp(email, password);
         }
     }
 };
