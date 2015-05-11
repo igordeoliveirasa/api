@@ -7,23 +7,39 @@ var Parse = {initialize:function(applicationId, key){}};
 
 
 describe("Client Api's tests", function() {
-    var api;
+
 
     beforeEach(function(){
-        api = new Client(new Auth(), new Application());
     });
 
-    it("should create new application since everything is ok", function() {
-        var token = "validToken";
-        var name = "App A";
-        spyOn(api.application, "create").and.returnValue({then:function(){
-            
+    if ("should pass because token is valid", function() {
+        var accountToken = "validToken";
+        spyOn(Codemets.Auth, "validateAccountToken").and.returnValue({then:function(){
+            Codemets.Auth.validateAccountTokenSuccessCallback({get:function(){ return "user"}});
         }});
-        api.createApplication(token, name).then(function(application){
-            expect(application.objecctId).toEqual("app_a_id");
-        }, function(error){
-            expect(true).toBe(false);
-        })
+        Codemets.Auth.validateToken(accountToken);
+        expect(Codemets.Auth.validateAccountToken).toHaveBeenCalledWith(accountToken);
+    });
+
+    it("should sign in correctly", function() {
+        var accountToken = "validToken";
+        var projectCode = "PROJ_A";
+        var projectName = "Project A";
+        var buildStatus = Codemets.BUILD_STATUS_SUCCESS;
+        var coverageRate = 50.0;
+        spyOn(Codemets.Project, "save").and.returnValue( {then:function() {
+           Codemets.Project.saveSuccessCallback({});
+        }});
+
+        spyOn(Codemets.Auth, "validateAccountToken").and.returnValue({then:function(){
+            Codemets.Auth.validateAccountTokenSuccessCallback({get:function(){return "user"}});
+        }});
+
+        spyOn(Codemets.Project, "where").and.returnValue({then:function(){
+            Codemets.Project.whereSuccessCallback([{}]);
+        }});
+        Codemets.hit(accountToken, projectCode, projectName, buildStatus, coverageRate);
+        expect(Codemets.Project.save).toHaveBeenCalledWith(projectCode, projectName, buildStatus, coverageRate, "user");
     });
 
 });
