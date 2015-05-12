@@ -1,19 +1,21 @@
 {
   "name": "codemets",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "Responsible for populating project build status",
-  "main": "src/codemets.js",
   "scripts": {
     "test": "karma start karma.conf.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/igordeoliveirasa/api.git"
+    "url": "https://github.com/igordeoliveirasa/codemets-cli.git"
   },
   "author": "",
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/igordeoliveirasa/api/issues"
+    "url": "https://github.com/igordeoliveirasa/codemets-cli/issues"
+  },
+  "bin": {
+    "codemets": "./bin/codemets"
   },
   "devDependencies": {
     "jasmine-core": "~2.3.2",
