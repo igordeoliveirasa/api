@@ -4,6 +4,7 @@
  * Created by igor on 10/05/15.
  */
 
+var Parse = require('parse').Parse;
 Parse.initialize("WE1ExJbmUS4zRcKOYopvSyECi9gFJ1C1N5GFTD7l", "vprhe4lWqNvfkgurX8J6zV6sijyfo2c2jRfwv0t4");
 
 var Codemets = {
@@ -32,7 +33,6 @@ var Codemets = {
             save: function (user, identifier, name) {
                 var Project = Parse.Object.extend("Project");
                 var project = new Project();
-                project.set("user", user);
                 project.set("identifier", identifier);
                 project.set("name", name);
 
@@ -44,9 +44,9 @@ var Codemets = {
             },
             where: function(key, value) {
                 var Project = Parse.Object.extend("Project");
-                var query = Parse.Query(Project);
-                query.equalTo("code", projectCode);
-                return query.find().then(Codemets.Project.whereSuccessCallback);
+                var query = new Parse.Query(Project);
+                query.equalTo(key, value);
+                return query.find();
             }
         },
         Hit:{
@@ -69,7 +69,7 @@ var Codemets = {
                 var user = users[0];
                 Codemets.Model.Project.where("identifier", projectIdentifier).then(function(projects){
                     if (projects.length==0) {
-                        Codemets.Model.Project.save(projectIdentifier, projectName).then(function(project){
+                        Codemets.Model.Project.save(user, projectIdentifier, projectName).then(function(project){
                             if (project) {
                                 Codemets.Model.Hit.save(user, project, buildStatus, coverageRate).then(function(hit){
                                     console.log("Done!");
@@ -83,12 +83,18 @@ var Codemets = {
                         });
                     }
                 });
+            } else {
+                console.log("Invalid account token.")
             }
         });
     }
 };
 
+var main = function(){
+    var argv = process.argv;
+    Codemets.hit(argv[2], argv[3], argv[4], argv[5], argv[6]);
+};
 
-process.argv.forEach(function (val, index, array) {
-    console.log(index + ': ' + val);
-});
+if (require.main === module) {
+    main();
+}

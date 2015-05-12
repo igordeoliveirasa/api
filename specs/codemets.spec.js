@@ -3,8 +3,11 @@
  */
 
 // Mocking Parse
-var Parse = {initialize:function(applicationId, key){}, Object:{extend:function(){}}};
-
+var require = function(){
+    return {Parse:{Query:function(data){},initialize:function(applicationId, key){}, Object:{extend:function(){}}}}
+};
+var process = {argv:[]};
+var module = "";
 
 describe("Codemets Api's tests", function() {
 
@@ -96,8 +99,20 @@ describe("Codemets Api's tests", function() {
         Codemets.hit(accountToken, projectIdentifier, projectName, buildStatus, coverageRate);
         expect(Codemets.Model.Auth.where).toHaveBeenCalledWith("accountToken", accountToken);
         expect(Codemets.Model.Project.where).toHaveBeenCalledWith("identifier", projectIdentifier);
-        expect(Codemets.Model.Project.save).toHaveBeenCalledWith(projectIdentifier, projectName);
+        expect(Codemets.Model.Project.save).toHaveBeenCalledWith(user, projectIdentifier, projectName);
         expect(Codemets.Model.Hit.save).toHaveBeenCalledWith(user, project, buildStatus, coverageRate);
     });
+
+    it("should call Codemets.hit right since parameters are ok", function(){
+        var accountToken = "validToken";
+        var projectIdentifier = "CODEMETS-MOBILE";
+        var projectName = "Codemets Mobile";
+        var buildStatus = Codemets.BUILD_STATUS.SUCCESS;
+        var coverageRate = 50.0;
+        process = {argv:["node", "path", accountToken, projectIdentifier, projectName, buildStatus, coverageRate]};
+        spyOn(Codemets, "hit");
+        main();
+        expect(Codemets.hit).toHaveBeenCalledWith(accountToken, projectIdentifier, projectName, buildStatus, coverageRate);
+    })
 
 });
