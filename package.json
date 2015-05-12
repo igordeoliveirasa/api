@@ -1,8 +1,8 @@
 {
-  "name": "api",
-  "version": "0.0.0",
-  "description": "",
-  "main": "src/api.js",
+  "name": "codemets-api-js",
+  "version": "0.1.0",
+  "description": "Responsible for populating project build status",
+  "main": "src/codemets.js",
   "scripts": {
     "test": "karma start karma.conf.js"
   },
