@@ -1,5 +1,5 @@
 {
-  "name": "codemets-api-js",
+  "name": "codemets",
   "version": "0.1.0",
   "description": "Responsible for populating project build status",
   "main": "src/codemets.js",
@@ -22,6 +22,6 @@
     "karma-coverage": "~0.3.1",
     "karma-jasmine": "~0.3.5",
     "karma-phantomjs-launcher": "^0.1.4",
-    "parse": "~1.4.2"
+    "parse": "^1.4.2"
   }
 }
