@@ -63,6 +63,25 @@ var Codemets = {
             }
         }
     },
+    Push: {
+        send:function(channels, alert){
+            Parse.Push.send(
+                {
+                    channels: channels,
+                    data: {alert: alert}
+                },
+                {
+                    success: Codemets.Push.sendSuccessCallback,
+                    error: Codemets.Push.sendErrorCallback
+                }
+            );
+        },
+        sendSuccessCallback:function(){
+        },
+        sendErrorCallback:function(error){
+            console.log(error);
+        }
+    },
     hit: function(accountToken, projectIdentifier, projectName, buildStatus, coverageRate) {
         Codemets.Model.Auth.where("accountToken", accountToken).then(function(users){
             if (users.length>0) {
@@ -72,6 +91,14 @@ var Codemets = {
                         Codemets.Model.Project.save(user, projectIdentifier, projectName).then(function(project){
                             if (project) {
                                 Codemets.Model.Hit.save(user, project, buildStatus, coverageRate).then(function(hit){
+                                    var status = "";
+                                    if (buildStatus == Codemets.BUILD_STATUS.SUCCESS) {
+                                        status = "passed";
+                                    }
+                                    else if (buildStatus == Codemets.BUILD_STATUS.ERROR) {
+                                        status = "failed";
+                                    }
+                                    Codemets.Push.send(["ci"], "Build " + status + ": " + projectName + ".");
                                     console.log("Done!");
                                 });
                             }

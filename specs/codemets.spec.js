@@ -96,11 +96,13 @@ describe("Codemets Api's tests", function() {
                 }
             }
         });
+        spyOn(Codemets.Push, "send").and.callFake(Codemets.Push.sendSuccessCallback);
         Codemets.hit(accountToken, projectIdentifier, projectName, buildStatus, coverageRate);
         expect(Codemets.Model.Auth.where).toHaveBeenCalledWith("accountToken", accountToken);
         expect(Codemets.Model.Project.where).toHaveBeenCalledWith("identifier", projectIdentifier);
         expect(Codemets.Model.Project.save).toHaveBeenCalledWith(user, projectIdentifier, projectName);
         expect(Codemets.Model.Hit.save).toHaveBeenCalledWith(user, project, buildStatus, coverageRate);
+        expect(Codemets.Push.send).toHaveBeenCalledWith(["ci"], "Build passed: Codemets Mobile.");
     });
 
     it("should call Codemets.hit right since parameters are ok", function(){
