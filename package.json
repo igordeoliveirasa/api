@@ -1,6 +1,6 @@
 {
   "name": "codemets",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Responsible for populating project build status",
   "scripts": {
     "test": "karma start karma.conf.js"
