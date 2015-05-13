@@ -20,13 +20,6 @@ var Codemets = {
                 var query = new Parse.Query(Parse.User);
                 query.equalTo(key, value);
                 return query.find();
-            },
-            signUp: function(email, password) {
-                var user = new Parse.User();
-                user.set("email", email);
-                user.set("username", email);
-                user.set("password", password);
-                return user.signUp();
             }
         },
         Project:{
@@ -35,6 +28,7 @@ var Codemets = {
                 var project = new Project();
                 project.set("identifier", identifier);
                 project.set("name", name);
+                project.set("user", user);
 
                 var acl = new Parse.ACL(user);
                 acl.setPublicReadAccess(true);
@@ -56,6 +50,7 @@ var Codemets = {
                 hit.set("project", project);
                 hit.set("buildStatus", buildStatus);
                 hit.set("coverageRate", coverageRate);
+                project.set("user", user);
                 var acl = new Parse.ACL(user);
                 acl.setPublicReadAccess(true);
                 hit.setACL(acl);
