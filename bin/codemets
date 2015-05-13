@@ -117,11 +117,44 @@ var Codemets = {
     }
 };
 
-var main = function(){
-    var argv = process.argv;
-    Codemets.hit(argv[2], argv[3], argv[4], argv[5], argv[6]);
+var main = function() {
+    this.displayUsage = function(){
+        var title = "Codemets";
+        var usage = "Usage:";
+        var commandLine = "codemets <account-token> <project-id> <project-name> <build-status> <coverage-rate>";
+        var br = "\n";
+        var tab = "  ";
+        var parametersTitle = "Parameters:";
+        var accountToken = "account-token: Your account token, received when you signed up.";
+        var projectId = "project-id: A unique project identifier.";
+        var projectName = "project-name: The most updated project name. Changes are welcome since project-id determines the project.";
+        var buildStatus = "build-status: It must be SUCCESS or ERROR, based on build results.";
+        var coverageRate = "coverage-rate: The coverage rate. It must be a float number from 0.0 to 100.0.";
+
+        var message = title + br + br +
+        usage + br +
+        tab + commandLine + br + br +
+        parametersTitle + br +
+        tab + accountToken + br +
+        tab + projectId + br +
+        tab + projectName + br +
+        tab + buildStatus + br +
+        tab + coverageRate + br;
+
+        console.log(message);
+    }
+
+    this.run = function() {
+        var argv = process.argv;
+        if (argv.length<7) {
+            this.displayUsage();
+        }
+        else {
+            Codemets.hit(argv[2], argv[3], argv[4], argv[5], argv[6]);
+        }
+    }
 };
 
 if (require.main === module) {
-    main();
+    new main().run();
 }

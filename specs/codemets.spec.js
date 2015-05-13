@@ -113,8 +113,16 @@ describe("Codemets Api's tests", function() {
         var coverageRate = 50.0;
         process = {argv:["node", "path", accountToken, projectIdentifier, projectName, buildStatus, coverageRate]};
         spyOn(Codemets, "hit");
-        main();
+        new main().run();
         expect(Codemets.hit).toHaveBeenCalledWith(accountToken, projectIdentifier, projectName, buildStatus, coverageRate);
-    })
+    });
+
+    it('should display instructions since arguments are not enough', function(){
+        var entryPoint = new main();
+        process = {argv:["node", "path"]};
+        spyOn(entryPoint, "displayUsage");
+        entryPoint.run();
+        expect(entryPoint.displayUsage).toHaveBeenCalled();
+    });
 
 });
