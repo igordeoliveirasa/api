@@ -1,6 +1,6 @@
 {
   "name": "codemets",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Responsible for populating project build status",
   "scripts": {
     "test": "karma start karma.conf.js"
@@ -14,6 +14,8 @@
   "bugs": {
     "url": "https://github.com/igordeoliveirasa/codemets-cli/issues"
   },
+
+  "main": "./bin/codemets",
   "bin": {
     "codemets": "./bin/codemets"
   },
