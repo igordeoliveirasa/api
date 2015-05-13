@@ -7,6 +7,8 @@
 var Parse = require('parse').Parse;
 Parse.initialize("WE1ExJbmUS4zRcKOYopvSyECi9gFJ1C1N5GFTD7l", "vprhe4lWqNvfkgurX8J6zV6sijyfo2c2jRfwv0t4");
 
+var MESSAGE_HIT = "Done! Codemets hits Earth!";
+
 var Codemets = {
 
     BUILD_STATUS: {
@@ -24,37 +26,37 @@ var Codemets = {
         },
         Project:{
             save: function (user, identifier, name) {
-                var Project = Parse.Object.extend("Project");
-                var project = new Project();
-                project.set("identifier", identifier);
-                project.set("name", name);
-                project.set("user", user);
+                var Entity = Parse.Object.extend("Project");
+                var entity = new Entity();
+                entity.set("identifier", identifier);
+                entity.set("name", name);
+                entity.set("user", user);
 
                 var acl = new Parse.ACL(user);
                 acl.setPublicReadAccess(true);
-                project.setACL(acl);
+                entity.setACL(acl);
 
-                return project.save();
+                return entity.save();
             },
             where: function(key, value) {
-                var Project = Parse.Object.extend("Project");
-                var query = new Parse.Query(Project);
+                var Entity = Parse.Object.extend("Project");
+                var query = new Parse.Query(Entity);
                 query.equalTo(key, value);
                 return query.find();
             }
         },
         Hit:{
             save:function(user, project, buildStatus, coverageRate){
-                var Hit = Parse.Object.extend("Hit");
-                var hit = new Hit();
-                hit.set("project", project);
-                hit.set("buildStatus", buildStatus);
-                hit.set("coverageRate", coverageRate);
-                project.set("user", user);
+                var Entity = Parse.Object.extend("Hit");
+                var entity = new Entity();
+                entity.set("project", project);
+                entity.set("buildStatus", buildStatus);
+                entity.set("coverageRate", coverageRate);
+                entity.set("user", user);
                 var acl = new Parse.ACL(user);
                 acl.setPublicReadAccess(true);
-                hit.setACL(acl);
-                return hit.save();
+                entity.setACL(acl);
+                return entity.save();
             }
         }
     },
@@ -94,14 +96,18 @@ var Codemets = {
                                         status = "failed";
                                     }
                                     Codemets.Push.send(["ci"], "Build " + status + ": " + projectName + ".");
-                                    console.log("Done!");
+                                    console.log(MESSAGE_HIT);
                                 });
                             }
+                        },function(error){
+                            console.log(error)
                         });
                     } else {
                         var project = projects[0];
                         Codemets.Model.Hit.save(user, project, buildStatus, coverageRate).then(function(hit){
-                            console.log("Done!");
+                            console.log(MESSAGE_HIT);
+                        }, function(error){
+                            console.log(error);
                         });
                     }
                 });
